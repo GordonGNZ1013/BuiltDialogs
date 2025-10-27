@@ -15,17 +15,17 @@ public:
     ~CBuiltDialogs();
 
 private:
-    QTextEdit* displayTextEdit;
-    QPushButton* colorPushBtn;
-    QPushButton* errorPushBtn;
-    QPushButton* filePushBtn;
-    QPushButton* fontPushBtn;
-    QPushButton* inputPushBtn;
-    QPushButton* pagePushBtn;
-    QPushButton* progressPushBtn;
-    QPushButton* printPushBtn;
+    QTextEdit   * displayTextEdit;
+    QPushButton * colorPushBtn;
+    QPushButton * errorPushBtn;
+    QPushButton * filePushBtn;
+    QPushButton * fontPushBtn;
+    QPushButton * inputPushBtn;
+    QPushButton * pagePushBtn;
+    QPushButton * progressPushBtn;
+    QPushButton * printPushBtn;
 private slots:
-    //void doPushBth();
+    void doPushBth();
 
 };
 #endif // CBUILTDIALOGS_H
