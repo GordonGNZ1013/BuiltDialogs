@@ -2,6 +2,7 @@
 #define CBUILTDIALOGS_H
 
 #include <QDialog>
+#include <QtWidgets>
 #include <QPushButton>
 #include <QTextEdit>
 
