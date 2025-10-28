@@ -1,4 +1,8 @@
 #include "cbuiltdialogs.h"
+#include<QtPrintSupport/qprinter.h>
+#include<QtPrintSupport/qpagesetupdialog.h>
+#include<QtPrintSupport/QPrintDialog>
+#include<QtPrintSupport/QPrintPreviewDialog>
 #include <QGridLayout>
 #include <QDebug>
 #include <QPalette>
@@ -46,14 +50,15 @@ void CBuiltDialogs::doPushBth()
     {
         QPalette palette=displayTextEdit->palette();
         const QColor& color=
-            QColorDialog::getColor(palette.color(QPalette::Text),
-                                this,tr("設定背景文字"));
+            QColorDialog::getColor(palette.color(QPalette::Base),
+                                   this,tr("設定背景文字"));
         if(color.isValid())
         {
-            palette.setColor(QPalette::Text, color);
+            palette.setColor(QPalette::Base, color);
             displayTextEdit->setPalette(palette);
         }
     }
+
     if(btn == errorPushBtn)
     {
         QErrorMessage box(this);
@@ -63,6 +68,7 @@ void CBuiltDialogs::doPushBth()
         box.showMessage     (QStringLiteral("錯誤訊息盒實例zz:"));
         box.exec();
     }
+
     if(btn ==filePushBtn)
     {
         QString fileName = QFileDialog::getOpenFileName(this,
@@ -73,6 +79,17 @@ void CBuiltDialogs::doPushBth()
                                     ";;XML檔(*.xml)"));
         displayTextEdit->setText(fileName);
     }
+
+    if (btn == fontPushBtn)
+    {
+        bool ok;
+        const QFont& font = QFontDialog::getFont(&ok,
+                                                 displayTextEdit->font(),
+                                                 this,
+                                                 QStringLiteral("字體對話盒"));
+        if (ok) displayTextEdit->setFont (font);
+    }
+
     if (btn == progressPushBtn)
     {
         QProgressDialog progress(QStringLiteral("正在讀取檔案"),
@@ -89,6 +106,40 @@ void CBuiltDialogs::doPushBth()
         }
         progress.setValue(10000);
     }
+
+    if (btn == inputPushBtn)
+    {
+        bool ok;
+        QString text = QInputDialog::getText(this,
+                                            QStringLiteral("輸入對話盒"),
+                                            QStringLiteral("輸入文字"),
+                                            QLineEdit:: Normal,
+                                            QDir::home().dirName(),
+                                            &ok
+                                            );
+    if (ok && !text.isEmpty()) displayTextEdit->setText(text);
+    }
+
+    if (btn == pagePushBtn)
+    {
+        QPrinter printer (QPrinter:: HighResolution);
+        QPageSetupDialog *dlg = new QPageSetupDialog(&printer, this);
+        dlg->setWindowTitle (QStringLiteral ("頁面設定話方塊"));
+        if (dlg->exec()== QDialog:: Accepted)
+        {
+
+        }
+    }
+
+    if (btn ==printPushBtn)
+    {
+        QPrinter printer (QPrinter:: HighResolution);
+        QPrintDialog dialog(&printer, this);
+        if (dialog.exec() != QDialog:: Accepted)
+            return;
+    }
+
+
 }
 
 CBuiltDialogs::~CBuiltDialogs()
