@@ -12,6 +12,7 @@ CBuiltDialogs::CBuiltDialogs(QWidget *parent)
     QGridLayout *gridLayout = new QGridLayout;
     displayTextEdit = new QTextEdit (QStringLiteral("Qt的標準通用對話盒"));
     colorPushBtn    = new QPushButton (QStringLiteral("顏色對話盒"));
+    textColorPushBtn= new QPushButton (QStringLiteral("文字顏色對話盒"));
     errorPushBtn    = new QPushButton (QStringLiteral("錯誤訊息盒"));
     filePushBtn     = new QPushButton (QStringLiteral("檔案對話盒"));
     fontPushBtn     = new QPushButton (QStringLiteral("字體對話盒"));
@@ -19,6 +20,8 @@ CBuiltDialogs::CBuiltDialogs(QWidget *parent)
     pagePushBtn     = new QPushButton (QStringLiteral("頁面設定對話盒"));
     progressPushBtn = new QPushButton (QStringLiteral("進度對話盒"));
     printPushBtn    = new QPushButton (QStringLiteral("列印對話盒"));
+    errorBox        = new QErrorMessage(this);
+    errorBox->setWindowTitle(QStringLiteral("錯誤訊息盒"));
 
     gridLayout->addWidget (colorPushBtn,0,0,1,1);
     gridLayout->addWidget (errorPushBtn,0,1,1,1);
@@ -28,6 +31,7 @@ CBuiltDialogs::CBuiltDialogs(QWidget *parent)
     gridLayout->addWidget (pagePushBtn,1,2,1,1);
     gridLayout->addWidget (progressPushBtn,2,0,1,1);
     gridLayout->addWidget (printPushBtn,2,1,1,1);
+    gridLayout->addWidget (textColorPushBtn,2,2,1,1);
     gridLayout->addWidget (displayTextEdit, 3,0,3,3);
 
         setLayout (gridLayout);
@@ -35,6 +39,7 @@ CBuiltDialogs::CBuiltDialogs(QWidget *parent)
         resize(400,300);
 
         connect(colorPushBtn,SIGNAL(clicked()),this,SLOT(doPushBth()));
+        connect(textColorPushBtn,SIGNAL(clicked()),this,SLOT(doPushBth()));
         connect(errorPushBtn,SIGNAL(clicked()),this,SLOT(doPushBth()));
         connect(filePushBtn,SIGNAL(clicked()),this,SLOT(doPushBth()));
         connect(fontPushBtn,SIGNAL(clicked()),this,SLOT(doPushBth()));
@@ -59,14 +64,25 @@ void CBuiltDialogs::doPushBth()
         }
     }
 
+    if(btn == textColorPushBtn)
+    {
+        QPalette palette=displayTextEdit->palette();
+        const QColor& color=
+            QColorDialog::getColor(palette.color(QPalette::Text),
+                                   this,tr("改文字顏色"));
+        if(color.isValid())
+        {
+            palette.setColor(QPalette::Text, color);
+            displayTextEdit->setPalette(palette);
+        }
+    }
+
     if(btn == errorPushBtn)
     {
-        QErrorMessage box(this);
-        box.setWindowTitle  (QStringLiteral("錯誤訊息盒"));
-        box.showMessage     (QStringLiteral("錯誤訊息盒實例xx:"));
-        box.showMessage     (QStringLiteral("錯誤訊息盒實例yy:"));
-        box.showMessage     (QStringLiteral("錯誤訊息盒實例zz:"));
-        box.exec();
+        errorBox->showMessage(QStringLiteral("錯誤訊息盒實例xx:"));
+        errorBox->showMessage(QStringLiteral("錯誤訊息盒實例yy:"));
+        errorBox->showMessage(QStringLiteral("錯誤訊息盒實例zz:"));
+        errorBox->show();
     }
 
     if(btn ==filePushBtn)
@@ -124,7 +140,7 @@ void CBuiltDialogs::doPushBth()
     {
         QPrinter printer (QPrinter:: HighResolution);
         QPageSetupDialog *dlg = new QPageSetupDialog(&printer, this);
-        dlg->setWindowTitle (QStringLiteral ("頁面設定話方塊"));
+        dlg->setWindowTitle (QStringLiteral ("頁面設定對話方塊"));
         if (dlg->exec()== QDialog:: Accepted)
         {
 

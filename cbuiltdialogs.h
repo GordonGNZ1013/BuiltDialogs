@@ -17,6 +17,7 @@ public:
 private:
     QTextEdit   * displayTextEdit;
     QPushButton * colorPushBtn;
+    QPushButton * textColorPushBtn;
     QPushButton * errorPushBtn;
     QPushButton * filePushBtn;
     QPushButton * fontPushBtn;
@@ -24,6 +25,7 @@ private:
     QPushButton * pagePushBtn;
     QPushButton * progressPushBtn;
     QPushButton * printPushBtn;
+    QErrorMessage * errorBox;
 private slots:
     void doPushBth();
 
